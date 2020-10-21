@@ -21,3 +21,15 @@ after_success:
   - docker push sambit24795/multi-nginx
   - docker push sambit24795/multi-server
   - docker push sambit24795/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  rerion: ap-south-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-ap-south-1-841357881706
+  bucket_path: docker_multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
