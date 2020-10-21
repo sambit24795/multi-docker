@@ -3,13 +3,13 @@ services:
   - docker
 
 before_install:
-  - docker build -t sambit24795/react-test -f ./frontend/Dockerfile ./frontend
+  - docker build -t sambit24795/react-test -f ./client/Dockerfile ./client
 
 script:
   - docker run -e CI=true sambit24795/react-test npm run test
 
 after_success:
-  - docker build -t sambit24795/multi-client ./frontend
+  - docker build -t sambit24795/multi-client ./client
   - docker build -t sambit24795/multi-nginx ./nginx
   - docker build -t sambit24795/multi-server ./server
   - docker build -t sambit24795/multi-worker ./worker
