@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t sambit24795/react-test -f ./frontend/Dockerfile ./frontend
+
+script:
+  - docker run -e CI=true sambit24795/react-test npm run test
+
+after_success:
+  - docker build -t sambit24795/multi-client ./frontend
+  - docker build -t sambit24795/multi-nginx ./nginx
+  - docker build -t sambit24795/multi-server ./server
+  - docker build -t sambit24795/multi-worker ./worker
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push those images to docker hub
+  - docker push sambit24795/multi-client
+  - docker push sambit24795/multi-nginx
+  - docker push sambit24795/multi-server
+  - docker push sambit24795/multi-worker
